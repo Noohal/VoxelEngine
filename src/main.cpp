@@ -53,12 +53,19 @@ int main()
     // Register framebuffer_size_callback as a callback function when the window changes size.
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-    // OpenGL Execution Loop
+    // OpenGL Render Loop
     while (!glfwWindowShouldClose(window))
     {
+        // Input
         processInput(window);
-        glfwSwapBuffers(window);
+
+        // Render Stuff
+        glClearColor(0.5f, 0.3f, 0.8f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        // Check and Call Events and Swap the buffers
         glfwPollEvents();
+        glfwSwapBuffers(window);
     }
 
     // Program is ready to end, clean up GLFW resources.
