@@ -53,6 +53,21 @@ int main()
     // Register framebuffer_size_callback as a callback function when the window changes size.
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
+    /* ==== Rendering Data ==== */
+    unsigned int VAO;
+    glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO);
+
+    float vertices[] = {
+        -1.0f, -1.0f, 0.0f,
+        1.0f, -1.0f, 0.0f,
+        0.0f, 1.0f, 0.0f};
+
+    unsigned int vbo;
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
     // OpenGL Render Loop
     while (!glfwWindowShouldClose(window))
     {
@@ -60,8 +75,15 @@ int main()
         processInput(window);
 
         // Render Stuff
-        glClearColor(0.5f, 0.3f, 0.8f, 1.0f);
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        glEnableVertexAttribArray(0);
+        glBindBuffer(GL_ARRAY_BUFFER, vbo);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
+
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDisableVertexAttribArray(0);
 
         // Check and Call Events and Swap the buffers
         glfwPollEvents();
